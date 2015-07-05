@@ -53,5 +53,14 @@
 	<bean id="listingConnectionPoolKey" class="org.dynamic.config.key.ConnectionPoolKeyImpl">
 		<constructor-arg value="listingConnectionPool" />
 	</bean>
+	<bean id="configPoller" class="org.dynamic.config.poller.ConfigPoller">
+		<constructor-arg ref="configService" />
+		<constructor-arg>
+			<map>
+				<entry key-ref="listingConnectionPool" value="initConnectionPool"></entry>
+				<entry key-ref="updateConnectionPool" value="initConnectionPool"></entry>
+			</map>
+		</constructor-arg>
+	</bean>
 
 </beans>

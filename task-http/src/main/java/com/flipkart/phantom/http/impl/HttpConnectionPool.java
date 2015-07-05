@@ -23,8 +23,6 @@ import java.util.Set;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
 
-import javax.annotation.PostConstruct;
-
 import org.apache.http.HttpHost;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpRequestBase;
@@ -70,8 +68,6 @@ public class HttpConnectionPool {
         HttpConnectionPool.REMOVE_HEADERS.add(HTTP.CONTENT_LEN);
     }
     
-    private ConfigPoller configPoller = new ConfigPoller();
-
     /** logger */
     private static Logger logger = LoggerFactory.getLogger(HttpConnectionPool.class);
 
@@ -111,60 +107,8 @@ public class HttpConnectionPool {
     /** Setting for forwarding Http headers*/
     private boolean forwardHeaders = HttpConnectionPool.FORWARD_HEADERS;
     
-    @PostConstruct
-    private void startConfigPolling(){
-    	Thread pollerTh = configPoller;
-    	pollerTh.start();
-    }
-    
-
-	/**
-     * Ambika: Anonymous inner class for intermittent polling to external config service
-     */
-    
-	private class ConfigPoller extends Thread {
-
-		private String activeChangelistId = "";
-
-		@Override
-		public void start() {
-			// Poll external config service to check config version every 30
-			// seconds
-			while (true) {
-				//First sleep for 1 sec, no need to check update for first time initialization	
-				try {
-					sleep(1000);
-				} catch (InterruptedException e) {
-					// Log error
-					// Logger.warn("Thread inturrupted, may cause early config change");
-				}
-				poll();
-			}
-
-		}
-
-		private void poll() {
-			try {
-				String latestConfig = configService.getConfigValue(
-						"FaultCanister", configService.ACTIVE_CHANGELIST_ID,
-						ConfigService.TYPE_META_DATA);
-				while (!activeChangelistId.equalsIgnoreCase(latestConfig)) {
-					activeChangelistId = latestConfig;
-					// if new configuration found, reinitialize connection pool
-					initConnectionPool();
-				}
-			} catch (ConfigServiceException e) {
-				// Log error and retry after 30 seconds
-				// Logger.warn("Could not connect to config service at time:"+
-				// System.currentTimeMillis());
-			}
-		}
-
-	}
-    
-    
     /**
-     * TODO: Explain synchronized
+     * Ambika: Why synchronized - This method is being used by config poller to refresh configurations
      * Initialize the connection pool
      */
     public synchronized void initConnectionPool() {
