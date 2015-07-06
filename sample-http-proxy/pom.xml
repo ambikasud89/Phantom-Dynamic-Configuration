@@ -26,6 +26,14 @@
             <artifactId>channel-handler-http</artifactId>
             <version>1.3.9</version>
         </dependency>
+      <dependency>
+            <groupId>com.flipkart.phantom</groupId>
+            <artifactId>dynamic-config-service</artifactId>
+            <version>1.3.9</version>
+            <scope>system</scope>
+            <type>jar</type>
+            <systemPath>/Users/sushantasahoo1/git/Phantom-Dynamic-Configuration/dynamic-config-service/target/dynamic-config-service.jar</systemPath>
+        </dependency>
     </dependencies>
 
     <build>

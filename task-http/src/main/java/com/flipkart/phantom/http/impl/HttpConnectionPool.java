@@ -330,6 +330,8 @@ public class HttpConnectionPool {
 	public void setConnectionPoolKey(Key connectionPoolKey) {
 		this.connectionPoolKey = connectionPoolKey;
 	}
+
+	
 	
     
     /** Getters / Setters */

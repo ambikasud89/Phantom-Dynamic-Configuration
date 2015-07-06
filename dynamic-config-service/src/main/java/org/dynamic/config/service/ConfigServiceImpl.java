@@ -1,5 +1,6 @@
 package org.dynamic.config.service;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.HashMap;
@@ -74,7 +75,7 @@ public class ConfigServiceImpl implements ConfigService {
 
 	public String getConfigValue(String projectId, String configParam,
 			String paramType) throws ConfigServiceException {
-
+		/*
 		// TODO Make external call to the injected client
 		HttpClient httpClient = HttpClientBuilder.create().build();
 		HttpResponse response = null;
@@ -96,13 +97,13 @@ public class ConfigServiceImpl implements ConfigService {
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
+		}*/
 		if (TYPE_META_DATA.equalsIgnoreCase(paramType)) {
-			// return "1";
-			return configDetails.getMeta_data().get(configParam);
+			return "1";
+			//return configDetails.getMeta_data().get(configParam);
 		} else {
-			// return "4";
-			return configDetails.getProperties().get(configParam);
+			return "4";
+			//return configDetails.getProperties().get(configParam);
 		}
 	}
 

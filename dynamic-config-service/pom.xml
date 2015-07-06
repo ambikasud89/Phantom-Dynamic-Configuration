@@ -7,10 +7,10 @@
     <artifactId>phantom</artifactId>
     <version>1.3.9</version>
   </parent>
-  <groupId>com.flipkart</groupId>
+  <groupId>com.flipkart.phantom</groupId>
   <artifactId>dynamic-config-service</artifactId>
   <version>1.3.9</version>
-  <packaging>war</packaging>
+  <packaging>jar</packaging>
   <name>dynamic-config-service Maven Webapp</name>
   <url>http://maven.apache.org</url>
   <dependencies>
