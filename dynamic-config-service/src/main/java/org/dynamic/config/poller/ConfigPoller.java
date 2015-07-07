@@ -5,8 +5,6 @@ import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.annotation.PostConstruct;
-
 import org.dynamic.config.exception.ConfigServiceException;
 import org.dynamic.config.service.ConfigService;
 
@@ -14,7 +12,7 @@ import org.dynamic.config.service.ConfigService;
  * Ambika: Poller class for intermittent polling to external config service and
  * refresh all config objects
  */
-public class ConfigPoller extends Thread {
+public class ConfigPoller implements Runnable {
 	private String activeChangelistId = "";
 	Map<Object, String> refreshObjectMap = new HashMap<Object, String>();
 	Method method;
@@ -24,30 +22,6 @@ public class ConfigPoller extends Thread {
 			Map<Object, String> refreshObjectMap) {
 		this.configService = configService;
 		this.refreshObjectMap = refreshObjectMap;
-	}
-
-	@PostConstruct
-	private void startConfigPolling() {
-		Thread pollerTh = new Thread(this);
-		pollerTh.start();
-	}
-
-	@Override
-	public void start() {
-		// Poll external config service to check config version every 30
-		// seconds
-		while (true) {
-			// First sleep for 1 sec, no need to check update for first time
-			// initialization
-			try {
-				sleep(1000);
-			} catch (InterruptedException e) {
-				// Log error
-				// Logger.warn("Thread inturrupted, may cause early config change");
-			}
-			poll();
-		}
-
 	}
 
 	private void poll() {
@@ -86,5 +60,25 @@ public class ConfigPoller extends Thread {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+
+	public void run() {
+
+		// Poll external config service to check config version every 30
+		// seconds
+		while (true) {
+			// First sleep for 1 sec, no need to check update for first time
+			// initialization
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
+				// Log error
+				// Logger.warn("Thread inturrupted, may cause early config change");
+			}
+			poll();
+		}
+
+		// TODO Auto-generated method stub
+
 	}
 }
